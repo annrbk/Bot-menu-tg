@@ -1,7 +1,18 @@
 require("dotenv").config();
-const { Bot, GrammyError, HttpError, InlineKeyboard } = require("grammy");
+const {
+  Bot,
+  GrammyError,
+  HttpError,
+  MemorySessionStorage,
+  session,
+} = require("grammy");
+const { start, menu } = require("./commands");
+const { handleMenuSelection } = require("./callbacks");
 
+const adapter = new MemorySessionStorage();
 const bot = new Bot(process.env.BOT_API_KEY);
+
+bot.use(session({ initial: () => ({}), storage: adapter }));
 
 bot.api.setMyCommands([
   {
@@ -14,11 +25,10 @@ bot.api.setMyCommands([
   },
 ]);
 
-bot.command("start", async (ctx) => {
-  await ctx.reply(`Hi there! 👋 I'm your MenuHub Bot.  
-Ready to help you choose something tasty! 🍽️  
-Select a command below`);
-});
+bot.command("start", start);
+bot.command("menu", menu);
+
+bot.on("callback_query:data", handleMenuSelection);
 
 bot.catch((err) => {
   const ctx = err.ctx;
