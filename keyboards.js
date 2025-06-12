@@ -1,21 +1,40 @@
 const { InlineKeyboard } = require("grammy");
 
-const menuKeyboard = new InlineKeyboard()
-  .text("add to cart 🛒", "add to cart 🛒")
-  .text("view order 📋", "view order 📋")
-  .row()
-  .text("an omelet ", "an omelet ")
-  .text("a shakshuka", "a shakshuka")
-  .row()
-  .text("syrniki ", "syrniki ")
-  .text("a semolina porridge", "a semolina porridge")
-  .row()
-  .text("an oatmeal", "an oatmeal")
-  .text("boiled eggs", "boiled eggs")
-  .row()
-  .text("a sandwich ", "a sandwich")
-  .text("a tea", "a tea")
-  .row()
-  .text("a coffee", "a coffee");
+const menuItems = [
+  { item: "an omelet", callback: "an omelet" },
+  { item: "a shakshuka", callback: "a shakshuka" },
+  { item: "syrniki", callback: "syrniki" },
+  { item: "a semolina porridge", callback: "a semolina porridge" },
+  { item: "an oatmeal", callback: "an oatmeal" },
+  { item: "boiled eggs", callback: "boiled eggs" },
+  { item: "a sandwich", callback: "a sandwich" },
+  { item: "a tea", callback: "a tea" },
+  { item: "a coffee", callback: "a coffee" },
+];
 
-module.exports = { menuKeyboard };
+const getMenuKeyboard = (selectedItem, cart) => {
+  const menuKeyboard = new InlineKeyboard();
+  const inCart = cart.some((cartItem) => cartItem.name === selectedItem.name);
+
+  const changeButton = inCart ? "remove from cart ❌" : "add to cart 🛒";
+
+  if (selectedItem) {
+    menuKeyboard
+      .text(changeButton, "toggle_button")
+      .text("view order 📋", "view_order")
+      .row();
+  }
+
+  menuItems.forEach((dish, index) => {
+    menuKeyboard.text(dish.item, dish.callback);
+    if (index % 2 === 1) menuKeyboard.row();
+  });
+  return menuKeyboard;
+};
+
+const backKeyboard = new InlineKeyboard().text(
+  "⬅️  back to menu",
+  "back_to_menu"
+);
+
+module.exports = { getMenuKeyboard, backKeyboard };

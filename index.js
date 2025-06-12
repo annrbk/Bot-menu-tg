@@ -8,6 +8,8 @@ const {
 } = require("grammy");
 const { start, menu } = require("./commands");
 const { handleMenuSelection } = require("./callbacks");
+const { backToMenu } = require("./handlers/backToMenu");
+const { viewOrder } = require("./handlers/viewOrder");
 
 const adapter = new MemorySessionStorage();
 const bot = new Bot(process.env.BOT_API_KEY);
@@ -27,6 +29,9 @@ bot.api.setMyCommands([
 
 bot.command("start", start);
 bot.command("menu", menu);
+
+bot.callbackQuery("view_order", viewOrder);
+bot.callbackQuery("back_to_menu", backToMenu);
 
 bot.on("callback_query:data", handleMenuSelection);
 
