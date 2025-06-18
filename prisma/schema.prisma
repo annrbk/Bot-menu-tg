@@ -1,0 +1,37 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Dish {
+  id         Int         @id @default(autoincrement())
+  name       String
+  callback   String
+  price      String
+  imgUrl     String
+  orderItems OrderItem[]
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  price      String
+  createdAt  DateTime    @default(now())
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id Int @id @default(autoincrement())
+
+  order   Order @relation(fields: [orderId], references: [id])
+  orderId Int
+
+  dish   Dish @relation(fields: [dishId], references: [id])
+  dishId Int
+
+  price String
+}

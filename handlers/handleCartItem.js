@@ -1,11 +1,7 @@
 const { getMenuKeyboard } = require("../keyboards");
 
-async function addToCart(ctx) {
+async function handleCartItem(ctx) {
   const selectedItem = ctx.session.selectedItem;
-
-  if (!selectedItem) {
-    await ctx.answerCallbackQuery("Select a dish");
-  }
 
   const cartItemIndex = ctx.session.cart.findIndex(
     (item) => item.name === selectedItem.name
@@ -22,7 +18,7 @@ async function addToCart(ctx) {
       ctx.session.message_id,
       {
         caption: `You removed: ${selectedItem.name}`,
-        reply_markup: getMenuKeyboard(
+        reply_markup: await getMenuKeyboard(
           ctx.session.selectedItem,
           ctx.session.cart
         ),
@@ -39,13 +35,18 @@ async function addToCart(ctx) {
       ctx.session.message_id,
       {
         caption: `You have chosen: ${selectedItem.name}\nPrice: ${selectedItem.price}💋`,
-        reply_markup: getMenuKeyboard(
+        reply_markup: await getMenuKeyboard(
           ctx.session.selectedItem,
           ctx.session.cart
         ),
       }
     );
   }
+
+  if (!selectedItem) {
+    await ctx.answerCallbackQuery("Select a dish");
+  }
+  return;
 }
 
-module.exports = { addToCart };
+module.exports = { handleCartItem };

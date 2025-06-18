@@ -1,18 +1,7 @@
 const { InlineKeyboard } = require("grammy");
+const { getMenu } = require("./services/dishService");
 
-const menuItems = [
-  { item: "an omelet", callback: "an omelet" },
-  { item: "a shakshuka", callback: "a shakshuka" },
-  { item: "syrniki", callback: "syrniki" },
-  { item: "a semolina porridge", callback: "a semolina porridge" },
-  { item: "an oatmeal", callback: "an oatmeal" },
-  { item: "boiled eggs", callback: "boiled eggs" },
-  { item: "a sandwich", callback: "a sandwich" },
-  { item: "a tea", callback: "a tea" },
-  { item: "a coffee", callback: "a coffee" },
-];
-
-const getMenuKeyboard = (selectedItem, cart) => {
+async function getMenuKeyboard(selectedItem, cart) {
   const menuKeyboard = new InlineKeyboard();
   const inCart = cart.some((cartItem) => cartItem.name === selectedItem.name);
 
@@ -25,12 +14,14 @@ const getMenuKeyboard = (selectedItem, cart) => {
       .row();
   }
 
+  const menuItems = await getMenu();
+
   menuItems.forEach((dish, index) => {
-    menuKeyboard.text(dish.item, dish.callback);
+    menuKeyboard.text(dish.name, dish.callback);
     if (index % 2 === 1) menuKeyboard.row();
   });
   return menuKeyboard;
-};
+}
 
 const backKeyboard = new InlineKeyboard().text(
   "⬅️  back to menu",

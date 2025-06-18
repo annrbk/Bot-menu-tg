@@ -15,7 +15,10 @@ async function backToMenu(ctx) {
     ctx.session.message_id,
     {
       caption: "Choose what you would like for breakfast?",
-      reply_markup: getMenuKeyboard(ctx.session.selectedItem, ctx.session.cart),
+      reply_markup: await getMenuKeyboard(
+        ctx.session.selectedItem,
+        ctx.session.cart
+      ),
     }
   );
 }

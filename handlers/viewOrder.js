@@ -2,11 +2,13 @@ const { InputFile } = require("grammy");
 const { backKeyboard } = require("../keyboards");
 const { totalSum } = require("../utils/totalSum");
 const path = require("path");
+const { createOrder } = require("../services/orderService");
 
 async function viewOrder(ctx) {
   await ctx.answerCallbackQuery();
   const cart = ctx.session.cart;
   if (cart && cart.length > 0) {
+    await createOrder(cart, totalSum);
     await ctx.api.editMessageMedia(
       ctx.session.chat_id,
       ctx.session.message_id,

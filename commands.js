@@ -12,7 +12,7 @@ async function menu(ctx) {
   const filePath = path.join(__dirname, "./images/hello.jpg");
   let message = await ctx.replyWithPhoto(new InputFile(filePath), {
     caption: "Choose what you would like for breakfast?",
-    reply_markup: getMenuKeyboard(
+    reply_markup: await getMenuKeyboard(
       ctx.session.selectedItem,
       ctx.session.cart || []
     ),

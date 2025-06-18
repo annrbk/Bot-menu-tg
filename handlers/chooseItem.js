@@ -1,10 +1,11 @@
-const { menuItems } = require("../menu");
+const { getMenu } = require("../services/dishService");
 const { getMenuKeyboard } = require("../keyboards");
 
 async function chooseItem(ctx, item) {
   await ctx.answerCallbackQuery();
   if (!ctx.session.cart) ctx.session.cart = [];
-  const selectedItem = menuItems.find((menuItem) => menuItem.name === item);
+  const menuItems = await getMenu();
+  const selectedItem = menuItems.find((menuItem) => menuItem.callback === item);
   if (selectedItem) {
     ctx.session.selectedItem = selectedItem;
     await ctx.api.editMessageMedia(
@@ -12,7 +13,7 @@ async function chooseItem(ctx, item) {
       ctx.session.message_id,
       {
         type: "photo",
-        media: selectedItem.img,
+        media: selectedItem.imgUrl,
       }
     );
     await ctx.api.editMessageCaption(
@@ -20,7 +21,7 @@ async function chooseItem(ctx, item) {
       ctx.session.message_id,
       {
         caption: `You have chosen: ${selectedItem.name}\nPrice: ${selectedItem.price}💋`,
-        reply_markup: getMenuKeyboard(
+        reply_markup: await getMenuKeyboard(
           ctx.session.selectedItem,
           ctx.session.cart
         ),
