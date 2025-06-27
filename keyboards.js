@@ -1,26 +1,25 @@
 const { InlineKeyboard } = require("grammy");
-const { getMenu } = require("./services/dishService");
+const { handleChangeButton } = require("./utils/keyboardUtils");
 
-async function getMenuKeyboard(selectedItem, cart) {
-  const menuKeyboard = new InlineKeyboard();
-  const inCart = cart.some((cartItem) => cartItem.name === selectedItem.name);
+function mealTypeKeyboard() {
+  return new InlineKeyboard()
+    .text("breakfast", "BREAKFAST")
+    .text("lunch", "LUNCH")
+    .text("dinner", "DINNER");
+}
 
-  const changeButton = inCart ? "remove from cart ❌" : "add to cart 🛒";
-
-  if (selectedItem) {
-    menuKeyboard
-      .text(changeButton, "toggle_button")
-      .text("view order 📋", "view_order")
-      .row();
-  }
-
-  const menuItems = await getMenu();
+async function getMenuKeyboard(menuItems, selectedItem, cart) {
+  const keyboard = new InlineKeyboard();
 
   menuItems.forEach((dish, index) => {
-    menuKeyboard.text(dish.name, dish.callback);
-    if (index % 2 === 1) menuKeyboard.row();
+    keyboard.text(dish.name, dish.callback);
+    if (index % 2 === 1) keyboard.row();
   });
-  return menuKeyboard;
+  keyboard.row();
+  if (selectedItem) {
+    handleChangeButton(selectedItem, cart, keyboard);
+  }
+  return keyboard;
 }
 
 const backKeyboard = new InlineKeyboard().text(
@@ -28,4 +27,8 @@ const backKeyboard = new InlineKeyboard().text(
   "back_to_menu"
 );
 
-module.exports = { getMenuKeyboard, backKeyboard };
+module.exports = {
+  getMenuKeyboard,
+  backKeyboard,
+  mealTypeKeyboard,
+};

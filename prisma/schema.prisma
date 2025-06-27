@@ -8,17 +8,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id         Int      @id @default(autoincrement())
+  telegramId String   @unique
+  username   String?
+  firstName  String?
+  createdAt  DateTime @default(now())
+  orders     Order[]
+}
+
 model Dish {
   id         Int         @id @default(autoincrement())
   name       String
   callback   String
   price      String
   imgUrl     String
+  mealType   MealType?
   orderItems OrderItem[]
 }
 
 model Order {
   id         Int         @id @default(autoincrement())
+  user       User?        @relation(fields: [userId], references: [id])
+  userId     Int?
   price      String
   createdAt  DateTime    @default(now())
   orderItems OrderItem[]
@@ -34,4 +46,10 @@ model OrderItem {
   dishId Int
 
   price String
+}
+
+enum MealType {
+  BREAKFAST
+  LUNCH
+  DINNER
 }
