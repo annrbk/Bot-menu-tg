@@ -6,7 +6,7 @@ const {
   MemorySessionStorage,
   session,
 } = require("grammy");
-const { start, menu } = require("./commands");
+const { start, menu, myorder } = require("./commands");
 const { handleMenuSelection } = require("./callbacks");
 const { backToMenu } = require("./handlers/backToMenu");
 const { viewCurrentOrder } = require("./handlers/viewCurrentOrder");
@@ -27,10 +27,15 @@ bot.api.setMyCommands([
     command: "menu",
     description: "Show menu",
   },
+  {
+    command: "myorder",
+    description: "Show my current order",
+  },
 ]);
 
 bot.command("start", start);
 bot.command("menu", menu);
+bot.command("myorder", myorder);
 
 bot.callbackQuery("view_order", viewCurrentOrder);
 bot.callbackQuery("back_to_menu", backToMenu);

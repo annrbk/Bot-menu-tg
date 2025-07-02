@@ -8,7 +8,7 @@ async function viewCurrentOrder(ctx) {
   await ctx.answerCallbackQuery();
   const cart = ctx.session.cart;
   if (cart && cart.length > 0) {
-    await createOrder(cart, totalSum);
+    await createOrder(cart, totalSum, String(ctx.from.id));
     await ctx.api.editMessageMedia(
       ctx.session.chat_id,
       ctx.session.message_id,
