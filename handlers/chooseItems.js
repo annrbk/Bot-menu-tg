@@ -27,7 +27,8 @@ async function chooseItems(ctx, item) {
         reply_markup: await getMenuKeyboard(
           menuItems,
           ctx.session.selectedItem,
-          ctx.session.cart
+          ctx.session.cart,
+          selectedMealType
         ),
       }
     );

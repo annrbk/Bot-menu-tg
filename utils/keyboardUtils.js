@@ -5,6 +5,8 @@ function handleChangeButton(selectedItem, cart, keyboard) {
     keyboard
       .text(toggleLabel, "toggle_button")
       .text("view order 📋", "view_order")
+      .row()
+      .text("next ➡️", "next_button")
       .row();
   }
   return keyboard;

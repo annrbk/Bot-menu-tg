@@ -1,6 +1,6 @@
 const { getMenuKeyboard } = require("../keyboards");
 
-async function handleCartItem(ctx) {
+async function handleCartItem(ctx, menuItems) {
   const selectedItem = ctx.session.selectedItem;
 
   const cartItemIndex = ctx.session.cart.findIndex(
@@ -19,6 +19,7 @@ async function handleCartItem(ctx) {
       {
         caption: `You removed: ${selectedItem.name}`,
         reply_markup: await getMenuKeyboard(
+          menuItems,
           ctx.session.selectedItem,
           ctx.session.cart
         ),
@@ -36,6 +37,7 @@ async function handleCartItem(ctx) {
       {
         caption: `You have chosen: ${selectedItem.name}\nPrice: ${selectedItem.price}💋`,
         reply_markup: await getMenuKeyboard(
+          menuItems,
           ctx.session.selectedItem,
           ctx.session.cart
         ),

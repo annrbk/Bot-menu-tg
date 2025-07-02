@@ -8,7 +8,12 @@ function mealTypeKeyboard() {
     .text("dinner", "DINNER");
 }
 
-async function getMenuKeyboard(menuItems, selectedItem, cart) {
+async function getMenuKeyboard(
+  menuItems,
+  selectedItem,
+  cart,
+  selectedMealType
+) {
   const keyboard = new InlineKeyboard();
 
   menuItems.forEach((dish, index) => {
@@ -17,9 +22,17 @@ async function getMenuKeyboard(menuItems, selectedItem, cart) {
   });
   keyboard.row();
   if (selectedItem) {
-    handleChangeButton(selectedItem, cart, keyboard);
+    handleChangeButton(selectedItem, cart, keyboard, selectedMealType);
   }
   return keyboard;
+}
+
+function viewCartKeyboard() {
+  return new InlineKeyboard().text("View cart 📋", "view_cart");
+}
+
+function backToOrderKeyboard() {
+  return new InlineKeyboard().text("⬅️  back to order", "back_to_order");
 }
 
 const backKeyboard = new InlineKeyboard().text(
@@ -31,4 +44,6 @@ module.exports = {
   getMenuKeyboard,
   backKeyboard,
   mealTypeKeyboard,
+  viewCartKeyboard,
+  backToOrderKeyboard,
 };

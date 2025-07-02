@@ -9,7 +9,9 @@ const {
 const { start, menu } = require("./commands");
 const { handleMenuSelection } = require("./callbacks");
 const { backToMenu } = require("./handlers/backToMenu");
-const { viewOrder } = require("./handlers/viewOrder");
+const { viewCurrentOrder } = require("./handlers/viewCurrentOrder");
+const { backToOrder } = require("./handlers/backToOrder");
+const { viewCart } = require("./handlers/viewCart");
 
 const adapter = new MemorySessionStorage();
 const bot = new Bot(process.env.BOT_API_KEY);
@@ -30,8 +32,10 @@ bot.api.setMyCommands([
 bot.command("start", start);
 bot.command("menu", menu);
 
-bot.callbackQuery("view_order", viewOrder);
+bot.callbackQuery("view_order", viewCurrentOrder);
 bot.callbackQuery("back_to_menu", backToMenu);
+bot.callbackQuery("back_to_order", backToOrder);
+bot.callbackQuery("view_cart", viewCart);
 
 bot.on("callback_query:data", handleMenuSelection);
 
