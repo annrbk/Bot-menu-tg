@@ -3,6 +3,7 @@ const { mealTypeKeyboard } = require("./keyboards");
 const { saveUser } = require("./services/userService");
 const path = require("path");
 const { getCurrentOrder } = require("./services/orderService");
+const { deleteCurrentOrder } = require("./services/orderService");
 
 async function start(ctx) {
   await ctx.reply(`Hi there! 👋 I'm your MenuHub Bot.  
@@ -47,4 +48,16 @@ async function myorder(ctx) {
   }
 }
 
-module.exports = { start, menu, myorder };
+async function cancelOrder(ctx) {
+  const order = await getCurrentOrder(String(ctx.from.id));
+  if (order) {
+    await deleteCurrentOrder(order.id);
+    await ctx.reply(
+      "Your current order has been cancelled. To order again, select the menu command"
+    );
+  } else {
+    await ctx.reply("You don't have any active orders to cancel.");
+  }
+}
+
+module.exports = { start, menu, myorder, cancelOrder };

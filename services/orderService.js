@@ -38,4 +38,11 @@ async function getCurrentOrder(telegramId) {
   });
 }
 
-module.exports = { createOrder, getCurrentOrder };
+async function deleteCurrentOrder(orderId) {
+  await prisma.orderItem.deleteMany({
+    where: { orderId: orderId },
+  });
+  return await prisma.order.delete({ where: { id: orderId } });
+}
+
+module.exports = { createOrder, getCurrentOrder, deleteCurrentOrder };
