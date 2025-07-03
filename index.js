@@ -12,11 +12,14 @@ const { backToMenu } = require("./handlers/backToMenu");
 const { viewCurrentOrder } = require("./handlers/viewCurrentOrder");
 const { backToOrder } = require("./handlers/backToOrder");
 const { viewCart } = require("./handlers/viewCart");
+const { sendNotification } = require("./cron");
 
 const adapter = new MemorySessionStorage();
 const bot = new Bot(process.env.BOT_API_KEY);
 
 bot.use(session({ initial: () => ({}), storage: adapter }));
+
+sendNotification(bot);
 
 bot.api.setMyCommands([
   {
