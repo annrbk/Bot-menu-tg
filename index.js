@@ -65,3 +65,5 @@ bot.catch((err) => {
     console.error("Unknown error:", e);
   }
 });
+
+bot.start();
