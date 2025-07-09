@@ -4,6 +4,8 @@ const {
   getDinnerMenu,
 } = require("../services/dishService");
 const { getMenuKeyboard } = require("../keyboards");
+const { InputFile } = require("grammy");
+const path = require("path");
 
 async function showMenuStep(ctx, mealType) {
   let menuItems;
