@@ -24,6 +24,11 @@ async function showMenuStep(ctx, mealType) {
       break;
   }
 
+  await ctx.api.editMessageMedia(ctx.session.chat_id, ctx.session.message_id, {
+    type: "animation",
+    media: new InputFile(path.join(__dirname, "../gif/gifNextStep.gif")),
+  });
+
   await ctx.api.editMessageCaption(
     ctx.session.chat_id,
     ctx.session.message_id,
